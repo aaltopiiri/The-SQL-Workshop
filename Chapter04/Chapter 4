@@ -1,0 +1,75 @@
+/* Retrieving All Columns of a Table */ 
+use PACKT_ONLINE_SHOP;
+SELECT * FROM ProductCategories;
+
+/* Exercise 4.01: Selecting Columns from a Table */
+
+use PACKT_ONLINE_SHOP; 
+SELECT ProductCategoryID, ProductCategoryName 
+FROM ProductCategories;
+
+SELECT ProductCategoryName, ProductCategoryID 
+FROM ProductCategories;
+
+/* Exercise 4.02: Aliasing the Column Headers */
+SELECT ProductCategoryName AS CATEGORY, ProductCategoryID AS ID 
+FROM ProductCategories;
+
+SELECT ProductCategoryName AS 'PRODUCT CATEGORY', ProductCategoryID AS ID 
+FROM ProductCategories;
+
+/* Ordering Rows According to a Particular Column */
+
+SELECT ProductCategoryName AS 'CATEGORY NAME', ProductCategoryID AS ID 
+FROM ProductCategories
+ORDER BY ProductCategoryName ASC; 
+
+SELECT ProductCategoryName AS 'CATEGORY NAME', ProductCategoryID AS ID 
+FROM ProductCategories
+ORDER BY 'CATEGORY NAME' DESC;
+
+/* Ordering Rows According to Multiple Columns */ 
+SELECT FirstName, CustomerID 
+FROM Customers;
+
+SELECT FirstName, CustomerID 
+FROM Customers 
+ORDER BY FirstName, CustomerID DESC;
+
+SELECT FirstName, CustomerID 
+FROM Customers 
+ORDER BY 1, 2;
+
+SELECT FirstName, CustomerID 
+FROM Customers 
+ORDER BY 1 DESC, 2 DESC;
+
+/* Exercise 4.03: Using the LIMIT Keyword */
+SELECT ProductName, NetRetailPrice
+FROM Products
+ORDER BY NetRetailPrice DESC
+LIMIT 5;
+
+SELECT ProductName, NetRetailPrice
+FROM Products 
+ORDER BY NetRetailPrice
+LIMIT 4;
+
+/* Using DISTINCT */
+
+SELECT DISTINCT FirstName, LastName
+FROM Customers1;
+
+SELECT DISTINCT FirstName
+FROM Customers1;
+
+/*Exercise 4.05: Calculating the Line Item Total */ 
+
+SELECT ProductID, Quantity, UnitPrice, (Quantity*UnitPrice) AS 'Line Item Total'
+FROM OrderItems;
+
+/* Exercise 4.06: Calculating Discount */
+
+SELECT ProductID, Quantity, UnitPrice, (Quantity*UnitPrice) AS 'Line Item Total', Discount, ((Quantity*UnitPrice)-(Quantity*Discount)) AS 'Price After Discount' 
+FROM OrderItems;
+
