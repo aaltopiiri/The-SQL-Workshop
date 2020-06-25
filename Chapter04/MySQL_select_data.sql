@@ -72,5 +72,6 @@ FROM Products
 ORDER BY NetRetailPrice DESC
 LIMIT 5;
 
+SELECT CURDATE();
 
 SELECT NOW();
