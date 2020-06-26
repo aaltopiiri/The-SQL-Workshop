@@ -16,30 +16,51 @@ BEGIN
 # CALL spFilterProductsByNRP(10.50); 
 
 SELECT   ProductName, WholesalePrice, NetRetailPrice, 
-         CASE 
-             WHEN NetRetailPrice <= 24.99 THEN 'Cheap' 
-             WHEN NetRetailPrice > 24.99 AND 
-	          NetRetailPrice <= 79.99 THEN 'Mid-price' 
-             WHEN NetRetailPrice > 79.99 AND 
-	          NetRetailPrice <= 2499.99 THEN 'Expensive' 
-	     ELSE 'Very Expensive' 
-         END AS 'Price Point', 
-         UnitKGWeight 
-FROM     Products 
--- WHERE    NetRetailPrice <= priceLevel 
+	CASE 
+		WHEN NetRetailPrice <= 24.99 THEN 'Cheap' 
+		WHEN NetRetailPrice > 24.99 AND NetRetailPrice <= 79.99 THEN 'Mid-price' 
+		WHEN NetRetailPrice > 79.99 AND NetRetailPrice <= 2499.99 THEN 'Expensive' 
+		ELSE 'Very Expensive' 
+	END AS 'Price Point', 
+UnitKGWeight 
+FROM Products 
+WHERE NetRetailPrice <= priceLevel 
 ORDER BY ProductName;
 
 END
 
-CALL spFilterProductsByNRP(10.50);
+CALL spFilterProductsByNRP(20.00);
 
-CREATE PROCEDURE 'spCustomerOrders' (IN orderDate datetime) 
+CREATE PROCEDURE `spCustomerOrders` (IN orderDate Datetime) 
 
-SELECT     CONCAT(C.FirstName, ' ', C.LastName) as 'Customer Name', 
-           O.OrderNumber, O.OrderDate 
-FROM       Orders O INNER JOIN Customers C ON 
-           C.CustomerID = O.CustomerID 
-WHERE      O.OrderDate <= orderDate 
-ORDER BY   'Customer Name'; 
+# to test: USE PACKT_ONLINE_SHOP; 
+# CALL spCustomerOrders('2018.01.12');
+
+SELECT CONCAT(C.FirstName, ' ', C.LastName) as 'Customer Name', O.OrderNumber, O.OrderDate 
+FROM Orders O INNER JOIN Customers C 
+ON C.CustomerID = O.CustomerID 
+WHERE O.OrderDate <= orderDate 
+ORDER BY 'Customer Name'; 
+
+DROP PROCEDURE `spFilterProductsByNRP`;
+
+CREATE PROCEDURE `spFilterProductsByNRP` 
+(priceLevel float,
+unitWeight float) 
+# to test: USE PACKT_ONLINE_SHOP; 
+# CALL spFilterProductsByNRP(10.50,0.03); 
+SELECT   ProductName, WholesalePrice, NetRetailPrice, 
+	CASE 
+		WHEN NetRetailPrice <= 24.99 THEN 'Cheap' 
+		WHEN NetRetailPrice > 24.99 AND NetRetailPrice <= 79.99 THEN 'Mid-price' 
+		WHEN NetRetailPrice > 79.99 AND NetRetailPrice <= 2499.99 THEN 'Expensive' 
+		ELSE 'Very Expensive' 
+	END AS 'Price Point', 
+UnitKGWeight, AvailableQuantity 
+FROM Products 
+WHERE NetRetailPrice <= priceLevel AND UnitKGWeight <= unitWeight 
+ORDER BY  ProductName;
+
+
 
 
